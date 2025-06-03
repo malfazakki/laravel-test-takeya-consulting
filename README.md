@@ -1,87 +1,34 @@
 # Laravel Skill Test
 
-## 1. Overview
+**Home Test Project for Laravel Developer Position at Takeya Consulting**
 
-Implement RESTful routes for a Post model using Laravel, with support for drafts, scheduled publishing, and user-authenticated operations.
+This is the result of the Home Test given by Takeya Consulting for the Laravel Developer position. All requirements listed in the README.md have been fulfilled and thoroughly tested.
 
-## 2. Workflow
+---
 
-1. Set a deadline and let us know. This deadline will depend on your schedule.
-2. Clone this repository and set up the environment.
-3. Change the remote repository to your public repository (do not delete the commit history).
-4. Implement the required features according to the requirements below.
-5. Push your changes to your public repository.
+## Checklist for README.md Specification Fulfillment
 
-## 3. Specifications
+### Drafts and Scheduling
+- Posts can be saved as drafts (`is_draft`) or scheduled for future publishing (`published_at`).
+- Endpoints filter and distinguish between draft, scheduled, and published posts.
 
-- **Drafts and Scheduling**: Posts can be saved as drafts or scheduled for future publishing.
-- **Scheduled Posts**: Scheduled posts should be published automatically when the publish date comes.
-- **Authentication**: Use Laravel’s built-in session and cookie-based authentication services.
+### Scheduled Posts
+- Scheduled posts are automatically "published" (appear in index/show) when the `published_at` time has passed, with no manual update required.
+- No scheduled post appears before its scheduled time.
 
-## 4. Requirements
+### Authentication
+- All operations requiring authentication (create, update, delete) use Laravel's session/cookie-based authentication.
+- Guests cannot create, edit, or delete posts.
 
-### 4-1. General
+### Specific Routes
+- `posts.create` and `posts.edit` may be skipped or simply return a string as instructed.
+- No view files, only JSON/redirect responses.
 
-- Implement Laravel best practices.
-- For team development, commit with an appropriate commit size and write suitable commit messages.
-- View file implementations are NOT required. The responses should be JSON or redirects.
+### Testing
+- All main routes (index, store, show, update, destroy) have feature tests for both success and failure scenarios.
+- Tests cover validation, authorization, and filtering.
 
-### 4-2. `posts.index` route
+### Best Practice
+- Follows Laravel 12 best practices (fillable, relationships, casts, etc).
 
-- Retrieve a paginated list (20 per page) of active posts.
-- Include the user data associated with each post.
-- Drafts or scheduled posts should not be included.
-- Response must be in JSON.
-
-### 4-3. `posts.create` route
-
-- You may skip implementing this route or return the string `posts.create`.
-
-### 4-4. `posts.store` route
-
-- Only authenticated users can create new posts.
-- Validate submitted data before creating the post.
-
-### 4-5. `posts.show` route
-
-- Retrieve a single post.
-- Response must be in JSON.
-- Return 404 if the post is draft or scheduled.
-
-### 4-6. `posts.edit` route
-
-- You may skip implementing this route or return the string `posts.edit`.
-
-### 4-7. `posts.update` route
-
-- Only the post's author can update the post.
-- Validate submitted data before updating the post.
-
-### 4-8. `posts.destroy` route
-
-- Only the post's author can delete the post.
-
-### 4-9. Testing
-- Write feature (HTTP) tests for all posts routes to verify expected behavior, including both successful and failure scenarios.
-
-## 5. Hints
-
-1. The correct implementation should follow Laravel 12’s official documentation (https://laravel.com/docs/12.x). Using outdated or deprecated syntax may be considered incorrect.
-2. You can use any references or AI tools, such as Laracasts, Stack Overflow, ChatGPT, Copilot, Cursor, and Devin. However, don't forget to review the official documentation and your code carefully.
-3. The `posts` table is already defined in the migration file. Refer to its fields to determine how to structure submitted data and how to identify whether a post is active, a draft, or scheduled.
-4. Although these routes behave like an API, you may use Laravel’s built-in cookie-based authentication instead of token-based systems such as Sanctum or Passport.
-
-### Recommended environment
-
-- PHP 8.3
-- Node v22.15.0
-- Database: SQLite
-- Server: Built-in development server
-
-### Database Seeding
-
-Seeders create sample data of User and Post.
-
-```
-php artisan db:seed
-```
+---
