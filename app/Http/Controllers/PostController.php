@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\StorePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -27,15 +29,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'is_draft' => 'required|boolean',
-            'published_at' => 'nullable|date',
-        ]);
-
+        $validatedData = $request->validated();
         $post = $request->user()->posts()->create($validatedData);
 
         return response()->json($post, 201);
@@ -58,20 +54,12 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
         $this->authorize('update', $post);
-
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'is_draft' => 'required|boolean',
-            'published_at' => 'nullable|date',
-        ]);
-
+        $validatedData = $request->validated();
         $post->update($validatedData);
-
-        $post->load('user'); // Muat ulang relasi user jika perlu
+        $post->load('user');
 
         return response()->json($post);
     }
