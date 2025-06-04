@@ -3,11 +3,21 @@
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-    Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-});
+// Route untuk 'index' dan 'show' yang boleh diakses publik
+Route::resource('posts', PostController::class)
+    ->only(['index', 'show'])
+    ->names([
+        'index' => 'posts.index',
+        'show' => 'posts.show',
+    ]);
 
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+// Route untuk 'store', 'update', dan 'destroy' yang butuh auth
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('posts', PostController::class)
+        ->only(['store', 'update', 'destroy'])
+        ->names([
+            'store' => 'posts.store',
+            'update' => 'posts.update',
+            'destroy' => 'posts.destroy',
+        ]);
+});
